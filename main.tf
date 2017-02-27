@@ -1,5 +1,5 @@
 resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {
-  comment = "Some comment"
+  comment = "Access identity for tierra-${var.project}-${var.region}-${var.environment}-cloudfront"
 }
 
 data "aws_iam_policy_document" "s3_policy" {
@@ -9,7 +9,7 @@ data "aws_iam_policy_document" "s3_policy" {
 
     principals {
       type        = "AWS"
-      identifiers = ["${aws_cloudfront_origin_access_identity.origin_access_identity.iam_arn}"]
+      identifiers = ["${aws_cloudfront_origin_access_identity.origin_access_identity.iam_arn}", "*"]
     }
   }
 
@@ -37,7 +37,7 @@ resource "aws_s3_bucket" "bucket_app" {
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
-    domain_name = "tierra-${var.project}-${var.environment}-cloudfront.s3.amazonaws.com"
+    domain_name = "tierra-${var.project}-${var.region}-${var.environment}-cloudfront.s3.amazonaws.com"
     origin_id = "${var.project}-${var.region}-${var.environment}-origin"
     s3_origin_config {
       origin_access_identity = "${aws_cloudfront_origin_access_identity.origin_access_identity.cloudfront_access_identity_path}"
@@ -66,6 +66,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     max_ttl = 86400
   }
 
+  default_root_object = "index.html"
   price_class = "PriceClass_200"
 
   restrictions {
