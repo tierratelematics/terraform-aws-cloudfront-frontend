@@ -24,7 +24,7 @@ EOF
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
-    domain_name =  "${aws_s3_bucket.bucket_app.bucket_domain_name}"
+    domain_name =  "tierra-${var.project}-${var.region}-${var.environment}-cloudfront.s3.amazonaws.com"
     origin_id   = "${var.project}-${var.region}-${var.environment}-origin"
   }
 
@@ -62,7 +62,19 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     cloudfront_default_certificate = true
   }
 
-  custom_error_response = "${element(var.custom_errores, count.index)}"
+  custom_error_response = [
+    {
+      error_caching_min_ttl = "0",
+      error_code = "400",
+      response_code = "200",
+      response_page_path = "/index.html"
+    },
+    {
+      error_caching_min_ttl = "0",
+      error_code = "403",
+      response_code = "200",
+      response_page_path = "/index.html"
+    }]
 
   tags {
     Project = "${var.project}"

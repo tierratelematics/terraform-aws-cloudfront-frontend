@@ -9,9 +9,3 @@ variable "environment" {
 variable "region" {
   description = "Aws Region"
 }
-
-variable "custom_errores" {
-  type = "list"
-  description = "List of custom errores"
-  default = []
-}
