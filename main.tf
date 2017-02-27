@@ -98,29 +98,3 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     Environment = "${var.environment}"
   }
 }
-
-
-resource "aws_iam_policy" "policy" {
-  name = "${var.project}-${var.region}-${var.environment}-cloudfront-bucket-policy"
-  description = "Policy for access to tierra-${var.project}-${var.region}-${var.environment}-cloudfront bucket"
-  policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": "s3:*",
-            "Resource": [
-                "arn:aws:s3:::tierra-${var.project}-${var.region}-${var.environment}*/*",
-                "arn:aws:s3:::tierra-${var.project}-${var.region}-${var.environment}*"
-            ]
-        },
-        {
-            "Effect": "Allow",
-            "Action": "s3:ListAllMyBuckets",
-            "Resource": "*"
-        }
-    ]
-}
-EOF
-}
