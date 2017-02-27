@@ -62,6 +62,8 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     cloudfront_default_certificate = true
   }
 
+  custom_error_response = "${element(var.custom_errores, count.index)}"
+
   tags {
     Project = "${var.project}"
     Environment = "${var.environment}"
