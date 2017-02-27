@@ -14,3 +14,8 @@ variable "bucketName" {
   description = "the bucketName"
   default = ""
 }
+
+variable "default_root_object" {
+  description = "The default root object"
+  default = "index.html"
+}

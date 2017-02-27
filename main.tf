@@ -66,7 +66,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     max_ttl = 86400
   }
 
-  default_root_object = "index.html"
+  default_root_object = "${var.default_root_object}"
   price_class = "PriceClass_200"
 
   restrictions {
