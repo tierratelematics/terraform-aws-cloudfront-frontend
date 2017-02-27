@@ -8,7 +8,7 @@ This is a terraform module useful to create a static site on Cloudfront with dat
 ```terraform
 module "cloudfront-s3" {
     source = "modules/cloudfront-website"
-    project = "Preattygoat"
+    project = "preattygoat"
     environment = "dev"
 }
 
