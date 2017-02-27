@@ -7,5 +7,6 @@ output "cloudfront_url" {
 }
 
 output "policy_arn" {
-    value = "${aws_iam_policy.policy.arn}"
+//    value = "${aws_iam_policy.aws_iam_policy_document.}"
+        value = ""
 }

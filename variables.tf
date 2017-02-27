@@ -9,3 +9,8 @@ variable "environment" {
 variable "region" {
   description = "Aws Region"
 }
+
+variable "bucketName" {
+  description = "the bucketName"
+  default = ""
+}
