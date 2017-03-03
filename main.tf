@@ -84,13 +84,13 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
       error_caching_min_ttl = "0",
       error_code = "400",
       response_code = "200",
-      response_page_path = "/index.html"
+      response_page_path = "/${var.default_root_object}"
     },
     {
       error_caching_min_ttl = "0",
       error_code = "403",
       response_code = "200",
-      response_page_path = "/index.html"
+      response_page_path = "/${var.default_root_object}"
     }]
 
   tags {
