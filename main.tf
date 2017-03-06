@@ -9,7 +9,7 @@ data "aws_iam_policy_document" "s3_policy" {
 
     principals {
       type        = "AWS"
-      identifiers = ["${aws_cloudfront_origin_access_identity.origin_access_identity.iam_arn}", "*"]
+      identifiers = ["${aws_cloudfront_origin_access_identity.origin_access_identity.iam_arn}"]
     }
   }
 
@@ -83,6 +83,12 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     {
       error_caching_min_ttl = "0",
       error_code = "400",
+      response_code = "200",
+      response_page_path = "/${var.default_root_object}"
+    },
+    {
+      error_caching_min_ttl = "0",
+      error_code = "404",
       response_code = "200",
       response_page_path = "/${var.default_root_object}"
     },
