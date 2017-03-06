@@ -1,4 +1,4 @@
-# cloudfront-website
+# cloudfront-ninjagoat
 This is a terraform module useful to create a static site on Cloudfront with data on S3
 
 ### Requirements
