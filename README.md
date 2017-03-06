@@ -12,6 +12,7 @@ module "cloudfront-s3" {
     environment = "dev"
     region = "eu-west-1"
     default_root_object = "index.html"
+    default_root_path = ""
 }
 
 output "bucket_name" {
