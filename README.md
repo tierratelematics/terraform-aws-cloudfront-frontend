@@ -1,4 +1,4 @@
-# cloudfront-website
+# cloudfront-ninjagoat
 This is a terraform module useful to create a static site on Cloudfront with data on S3
 
 ### Requirements
@@ -8,8 +8,11 @@ This is a terraform module useful to create a static site on Cloudfront with dat
 ```terraform
 module "cloudfront-s3" {
     source = "modules/cloudfront-website"
-    project = "Preattygoat"
+    project = "preattygoat"
     environment = "dev"
+    region = "eu-west-1"
+    default_root_object = "index.html"
+    default_root_path = ""
 }
 
 output "bucket_name" {

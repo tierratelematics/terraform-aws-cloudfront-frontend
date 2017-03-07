@@ -7,5 +7,5 @@ output "cloudfront_url" {
 }
 
 output "policy_arn" {
-    value = "${aws_iam_policy.policy.arn}"
+    value = "${aws_cloudfront_origin_access_identity.origin_access_identity.iam_arn}"
 }
