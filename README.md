@@ -52,9 +52,9 @@ output "policy_arn" {
 ## Example of usage
 ```terraform
 module "cloudfront-s3" {
-    source = "modules/cloudfront-website"
-    project = "preattygoat"
-    environment = "dev"
+    source = "../../modules/cloudfront-s3"
+    project = "project"
+    environment = "env"
     region = "eu-west-1"
     default_root_object = "index.html"
     default_root_path = ""
