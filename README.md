@@ -1,75 +1,47 @@
-# cloudfront-ninjagoat
-This is a terraform module useful to create a static site on Cloudfront with data on S3
+AWS Cloudfront Frontend Terraform module
+===========
+A terraform module to deploy a Frontend Project on cloudfront (Amazon CDN)
 
-### Requirements
+Requirements
+===========
 * Terraform v0.8.5 or higher
 
-### Variables
-```
-variable "project" {
-   description = "Name of project"
- }
- 
- variable "environment" {
-   description = "Name of environment (i.e. dev, test, prod)"
- }
- 
- variable "region" {
-   description = "Aws Region"
- }
- 
- variable "bucketName" {
-   description = "the bucketName"
-   default = ""
- }
- 
- variable "default_root_object" {
-   description = "The default root object"
-   default = "index.html"
- }
- 
- variable "default_root_path" {
-   description = "The default root path"
-   default = ""
- }
- ```
+Module Input Variables
+----------------------
+- `project` - project name
+- `environment` - environment name (i.e. dev,test,prod)
+- `region` - aws region
+- `default_root_path` - project default root path (default "")
 
-### Outputs
-```
-output "bucket_name" {
-    value = "${aws_s3_bucket.bucket_app.id}"
-}
-
-output "cloudfront_url" {
-    value = "${aws_cloudfront_distribution.s3_distribution.domain_name}"
-}
-
-output "policy_arn" {
-    value = "${aws_cloudfront_origin_access_identity.origin_access_identity.iam_arn}"
-}
-```
-
-## Example of usage
-```terraform
+Usage
+-----
+```hcl
 module "cloudfront-s3" {
-    source = "../../modules/cloudfront-s3"
-    project = "project"
-    environment = "env"
-    region = "eu-west-1"
-    default_root_object = "index.html"
-    default_root_path = ""
-}
-
-output "bucket_name" {
-    value = "${module.cloudfront-s3.bucket_name}"
-}
-
-output "cloudfront_url" {
-    value = "${module.cloudfront-s3.cloudfront_url}"
-}
-
-output "policy_arn" {
-    value = "${module.cloudfront-s3.policy_arn}"
+  source = "github.com/tierratelematics/terraform-aws-cloudfront-frontend"
+  project = "ninjagoat-frontend"
+  environment = "dev"
+  region = "eu-west-1"
 }
 ```
 
+Outputs
+=======
+- `bucket_name` - aws bucket name
+- `cloudfront_url` - aws cloudfront url
+- `policy_arn` - aws policy arn
+
+License
+=======
+Copyright 2016 Tierra SpA
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+[http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
