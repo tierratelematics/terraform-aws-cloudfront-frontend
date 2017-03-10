@@ -66,7 +66,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     max_ttl = 86400
   }
 
-  default_root_object = "${var.default_root_path}${var.default_root_object}"
+  default_root_object = "${var.default_root_path}index.html"
   price_class = "PriceClass_200"
 
   restrictions {
@@ -84,19 +84,19 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
       error_caching_min_ttl = "0",
       error_code = "400",
       response_code = "200",
-      response_page_path = "/${var.default_root_object}"
+      response_page_path = "/index.html"
     },
     {
       error_caching_min_ttl = "0",
       error_code = "404",
       response_code = "200",
-      response_page_path = "/${var.default_root_object}"
+      response_page_path = "/index.html"
     },
     {
       error_caching_min_ttl = "0",
       error_code = "403",
       response_code = "200",
-      response_page_path = "/${var.default_root_object}"
+      response_page_path = "/index.html"
     }]
 
   tags {
