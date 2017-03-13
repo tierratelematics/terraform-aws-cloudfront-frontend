@@ -42,10 +42,18 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     s3_origin_config {
       origin_access_identity = "${aws_cloudfront_origin_access_identity.origin_access_identity.cloudfront_access_identity_path}"
     }
+    custom_origin_config {
+      http_port = 80
+      https_port = 443
+      origin_protocol_policy = "https-only"
+      origin_ssl_protocols = ["TLSv1", "TLSv1.1", "TLSv1.2"]
+    }
   }
 
   enabled = true
   comment = "Cloud Front for ${var.project} (${var.environment})"
+
+  aliases = ["${var.domain}"]
 
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
@@ -75,7 +83,11 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     }
   }
 
-  viewer_certificate = ["${var.viewer_certificate}"]
+  "viewer_certificate" {
+    acm_certificate_arn = "${var.acm-certificate-arn}"
+    ssl_support_method = "sni-only"
+    minimum_protocol_version = "TLSv1"
+  }
 
   custom_error_response = [
     {

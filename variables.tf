@@ -28,8 +28,10 @@ variable "viewer_certificate" {
   }
 }
 
-variable "aliases" {
-  type = "list"
-  description = "All cloudfront aliases"
-  default = []
+variable "domain" {
+  description = "Domain Name"
+}
+
+variable "acm-certificate-arn" {
+  description = "The certificate arn"
 }
