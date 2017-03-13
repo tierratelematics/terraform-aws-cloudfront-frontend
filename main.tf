@@ -75,7 +75,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     }
   }
 
-  viewer_certificate = "${var.viewer_certificate}"
+  viewer_certificate = ["${var.viewer_certificate}"]
 
   custom_error_response = [
     {

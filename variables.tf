@@ -27,3 +27,9 @@ variable "viewer_certificate" {
     cloudfront_default_certificate = true
   }
 }
+
+variable "aliases" {
+  type = "list"
+  description = "All cloudfront aliases"
+  default = []
+}
