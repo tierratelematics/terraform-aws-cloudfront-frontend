@@ -14,7 +14,7 @@ Module Input Variables
 - `region` - aws region
 - `default_root_path` - project default root path (default "")
 - `alias_domain` - Alias Domain Name
-- `acm-certificate-arn` - The certificate arn
+- `ssl_cert_id` - The ssl Certificate id
 
 Usage
 -----
@@ -25,7 +25,7 @@ module "cloudfront-s3" {
   environment = "dev"
   region = "eu-west-1"
   alias_domain = "prettygoat-fe.tierratelematic.com"
-  acm-certificate-arn = "arn::"
+  ssl_cert_id = "idSSLCert"
 }
 ```
 

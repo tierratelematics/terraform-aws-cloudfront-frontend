@@ -32,6 +32,6 @@ variable "alias_domain" {
   description = "Alias Domain Name"
 }
 
-variable "acm-certificate-arn" {
-  description = "The certificate arn"
+variable "ssl_cert_id" {
+  description = "The ssl cert id"
 }
