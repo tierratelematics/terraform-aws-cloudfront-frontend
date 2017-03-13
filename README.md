@@ -5,6 +5,7 @@ A terraform module to deploy a Frontend Project on cloudfront (Amazon CDN)
 Requirements
 ===========
 * Terraform v0.8.5 or higher
+* AWS Certificate Arn
 
 Module Input Variables
 ----------------------
