@@ -12,6 +12,8 @@ Module Input Variables
 - `environment` - environment name (i.e. dev,test,prod)
 - `region` - aws region
 - `default_root_path` - project default root path (default "")
+- `alias_domain` - Alias Domain Name
+- `acm-certificate-arn` - The certificate arn
 
 Usage
 -----
@@ -21,6 +23,8 @@ module "cloudfront-s3" {
   project = "ninjagoat-frontend"
   environment = "dev"
   region = "eu-west-1"
+  alias_domain = "prettygoat-fe.tierratelematic.com"
+  acm-certificate-arn = "arn::"
 }
 ```
 
@@ -29,6 +33,7 @@ Outputs
 - `bucket_name` - aws bucket name
 - `cloudfront_url` - aws cloudfront url
 - `policy_arn` - aws policy arn
+- `cloufront_hosted_zone_id` - aws cloufroont hosted zone id
 
 License
 =======

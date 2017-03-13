@@ -28,8 +28,8 @@ variable "viewer_certificate" {
   }
 }
 
-variable "domain" {
-  description = "Domain Name"
+variable "alias_domain" {
+  description = "Alias Domain Name"
 }
 
 variable "acm-certificate-arn" {
