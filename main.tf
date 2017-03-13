@@ -60,7 +60,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
       }
     }
 
-    viewer_protocol_policy = "allow-all"
+    viewer_protocol_policy = "${var.viewer_protocol_policy}"
     min_ttl = 0
     default_ttl = 3600
     max_ttl = 86400
@@ -75,9 +75,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     }
   }
 
-  viewer_certificate {
-    cloudfront_default_certificate = true
-  }
+  viewer_certificate = "${var.viewer_certificate}"
 
   custom_error_response = [
     {
