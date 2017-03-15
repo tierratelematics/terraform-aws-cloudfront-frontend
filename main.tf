@@ -38,6 +38,7 @@ resource "aws_s3_bucket" "bucket_app" {
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
     domain_name = "${aws_s3_bucket.bucket_app.bucket_domain_name}"
+    origin_id = "${var.project}-${var.region}-${var.environment}-origin"
     s3_origin_config {
       origin_access_identity = "${aws_cloudfront_origin_access_identity.origin_access_identity.cloudfront_access_identity_path}"
     }
