@@ -5,6 +5,7 @@ A terraform module to deploy a Frontend Project on cloudfront (Amazon CDN)
 Requirements
 ===========
 * Terraform v0.8.5 or higher
+* AWS Certificate Arn
 
 Module Input Variables
 ----------------------
@@ -12,6 +13,8 @@ Module Input Variables
 - `environment` - environment name (i.e. dev,test,prod)
 - `region` - aws region
 - `default_root_path` - project default root path (default "")
+- `alias_domain` - Alias Domain Name
+- `ssl_cert_id` - The ssl Certificate id
 
 Usage
 -----
@@ -21,6 +24,8 @@ module "cloudfront-s3" {
   project = "ninjagoat-frontend"
   environment = "dev"
   region = "eu-west-1"
+  alias_domain = "prettygoat-fe.tierratelematic.com"
+  ssl_cert_id = "idSSLCert"
 }
 ```
 
@@ -28,11 +33,11 @@ Outputs
 =======
 - `bucket_name` - aws bucket name
 - `cloudfront_url` - aws cloudfront url
-- `policy_arn` - aws policy arn
+- `cloufront_hosted_zone_id` - aws cloufroont hosted zone id
 
 License
 =======
-Copyright 2016 Tierra SpA
+Copyright 2017 Tierra SpA
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

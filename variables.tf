@@ -14,3 +14,24 @@ variable "default_root_path" {
   description = "The default root path"
   default = ""
 }
+
+variable "viewer_protocol_policy" {
+  description = "The protol policy"
+  default = "allow-all"
+}
+
+variable "viewer_certificate" {
+  type = "map"
+  description = "All certificate parameters"
+  default = {
+    cloudfront_default_certificate = true
+  }
+}
+
+variable "alias_domain" {
+  description = "Alias Domain Name"
+}
+
+variable "ssl_cert_id" {
+  description = "The ssl cert id"
+}
