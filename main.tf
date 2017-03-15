@@ -1,32 +1,18 @@
-resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {
-  comment = "Access identity for tierra-${var.project}-${var.region}-${var.environment}-cloudfront"
-}
-
-data "aws_iam_policy_document" "s3_policy" {
-  statement {
-    actions   = ["s3:GetObject"]
-    resources = ["arn:aws:s3:::tierra-${var.project}-${var.region}-${var.environment}-cloudfront/*"]
-
-    principals {
-      type        = "AWS"
-      identifiers = ["${aws_cloudfront_origin_access_identity.origin_access_identity.iam_arn}"]
-    }
-  }
-
-  statement {
-    actions   = ["s3:ListBucket"]
-    resources = ["arn:aws:s3:::tierra-${var.project}-${var.region}-${var.environment}-cloudfront"]
-
-    principals {
-      type        = "AWS"
-      identifiers = ["${aws_cloudfront_origin_access_identity.origin_access_identity.iam_arn}"]
-    }
-  }
-}
-
 resource "aws_s3_bucket" "bucket_app" {
   bucket = "tierra-${var.project}-${var.region}-${var.environment}-cloudfront"
-  policy = "${data.aws_iam_policy_document.s3_policy.json}"
+  policy = <<EOF
+{
+  "Statement": [
+    {
+      "Sid": "AddPerm",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::tierra-${var.project}-${var.region}-${var.environment}-cloudfront/*"
+    }
+  ]
+}
+EOF
 
   tags {
     Name = "tierra-${var.project}-${var.region}-${var.environment}-cloudfront"
@@ -37,7 +23,7 @@ resource "aws_s3_bucket" "bucket_app" {
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
-    domain_name = "${aws_s3_bucket.bucket_app.bucket_domain_name}"
+    domain_name = "tierra-${var.project}-${var.region}-${var.environment}-cloudfront"
     origin_id = "${var.project}-${var.region}-${var.environment}-origin"
     custom_origin_config {
       http_port = 80
