@@ -1,17 +1,17 @@
 resource "aws_s3_bucket" "bucket_app" {
   bucket = "tierra-${var.project}-${var.region}-${var.environment}-cloudfront"
   policy = <<EOF
-{
-  "Statement": [
-    {
-      "Sid": "AddPerm",
-      "Effect": "Allow",
-      "Principal": "*",
-      "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::tierra-${var.project}-${var.region}-${var.environment}-cloudfront/*"
-    }
-  ]
-}
+      {
+        "Statement": [
+          {
+            "Sid": "AddPerm",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::tierra-${var.project}-${var.region}-${var.environment}-cloudfront/*"
+          }
+        ]
+      }
 EOF
 
   tags {
