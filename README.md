@@ -33,7 +33,6 @@ Outputs
 =======
 - `bucket_name` - aws bucket name
 - `cloudfront_url` - aws cloudfront url
-- `policy_arn` - aws policy arn
 - `cloufront_hosted_zone_id` - aws cloufroont hosted zone id
 
 License
