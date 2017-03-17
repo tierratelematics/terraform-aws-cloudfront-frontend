@@ -17,7 +17,7 @@ variable "default_root_path" {
 
 variable "viewer_protocol_policy" {
   description = "The protol policy"
-  default = "allow-all"
+  default = "https-only"
 }
 
 variable "viewer_certificate" {
