@@ -1,18 +1,22 @@
+data "aws_iam_policy_document" "s3_policy" {
+  statement {
+    actions   = ["s3:GetObject"]
+    resources = ["arn:aws:s3:::tierra-${var.project}-${var.region}-${var.environment}-cloudfront/*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+  }
+}
+
 resource "aws_s3_bucket" "bucket_app" {
   bucket = "tierra-${var.project}-${var.region}-${var.environment}-cloudfront"
-  policy = <<EOF
-{
-  "Statement": [
-    {
-      "Sid": "AddPerm",
-      "Effect": "Allow",
-      "Principal": "*",
-      "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::tierra-${var.project}-${var.region}-${var.environment}-cloudfront/*"
-    }
-  ]
-}
-EOF
+  policy = "${data.aws_iam_policy_document.s3_policy.json}"
+
+  website {
+    index_document = "index.html"
+  }
 
   tags {
     Name = "tierra-${var.project}-${var.region}-${var.environment}-cloudfront"
