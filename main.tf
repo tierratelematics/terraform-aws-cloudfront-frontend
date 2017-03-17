@@ -23,7 +23,7 @@ EOF
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
-    domain_name = "tierra-${var.project}-${var.region}-${var.environment}-cloudfront"
+    domain_name = "tierra-${var.project}-${var.region}-${var.environment}-cloudfront.s3-website-eu-west-1.amazonaws.com"
     origin_id = "${var.project}-${var.region}-${var.environment}-origin"
     custom_origin_config {
       http_port = 80
