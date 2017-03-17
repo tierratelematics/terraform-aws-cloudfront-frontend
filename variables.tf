@@ -35,3 +35,7 @@ variable "alias_domain" {
 variable "ssl_cert_id" {
   description = "The ssl cert id"
 }
+
+variable "public_register_alias_domain" {
+  description = "Register.it alias domain"
+}

@@ -15,6 +15,7 @@ Module Input Variables
 - `default_root_path` - project default root path (default "")
 - `alias_domain` - Alias Domain Name
 - `ssl_cert_id` - The ssl Certificate id
+- `public_register_alias_domain` - Register.it alias domain
 
 Usage
 -----
@@ -24,8 +25,9 @@ module "cloudfront-s3" {
   project = "ninjagoat-frontend"
   environment = "dev"
   region = "eu-west-1"
-  alias_domain = "prettygoat-fe.tierratelematic.com"
+  alias_domain = "prettygoat-fe.tierra.io"
   ssl_cert_id = "idSSLCert"
+  public_register_alias_domain = "prettygoat-fe.tierratelematics.com"
 }
 ```
 
