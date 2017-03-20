@@ -17,7 +17,7 @@ variable "default_root_path" {
 
 variable "viewer_protocol_policy" {
   description = "The protol policy"
-  default = "allow-all"
+  default = "https-only"
 }
 
 variable "viewer_certificate" {
@@ -34,4 +34,8 @@ variable "alias_domain" {
 
 variable "ssl_cert_id" {
   description = "The ssl cert id"
+}
+
+variable "public_register_alias_domain" {
+  description = "Register.it alias domain"
 }

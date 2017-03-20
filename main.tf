@@ -1,18 +1,22 @@
+data "aws_iam_policy_document" "s3_policy" {
+  statement {
+    actions   = ["s3:GetObject"]
+    resources = ["arn:aws:s3:::tierra-${var.project}-${var.region}-${var.environment}-cloudfront/*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+  }
+}
+
 resource "aws_s3_bucket" "bucket_app" {
   bucket = "tierra-${var.project}-${var.region}-${var.environment}-cloudfront"
-  policy = <<EOF
-      {
-        "Statement": [
-          {
-            "Sid": "AddPerm",
-            "Effect": "Allow",
-            "Principal": "*",
-            "Action": "s3:GetObject",
-            "Resource": "arn:aws:s3:::tierra-${var.project}-${var.region}-${var.environment}-cloudfront/*"
-          }
-        ]
-      }
-EOF
+  policy = "${data.aws_iam_policy_document.s3_policy.json}"
+
+  website {
+    index_document = "index.html"
+  }
 
   tags {
     Name = "tierra-${var.project}-${var.region}-${var.environment}-cloudfront"
@@ -23,7 +27,7 @@ EOF
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
-    domain_name = "tierra-${var.project}-${var.region}-${var.environment}-cloudfront"
+    domain_name = "tierra-${var.project}-${var.region}-${var.environment}-cloudfront.s3-website-eu-west-1.amazonaws.com"
     origin_id = "${var.project}-${var.region}-${var.environment}-origin"
     custom_origin_config {
       http_port = 80
@@ -36,7 +40,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   enabled = true
   comment = "Cloud Front for ${var.project} (${var.environment})"
 
-  aliases = ["${var.alias_domain}"]
+  aliases = ["${var.alias_domain}","${var.public_register_alias_domain}"]
 
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
