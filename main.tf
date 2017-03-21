@@ -18,6 +18,12 @@ resource "aws_s3_bucket" "bucket_app" {
     index_document = "index.html"
   }
 
+  cors_rule {
+    allowed_headers = ["*"]
+    allowed_methods = ["GET"]
+    allowed_origins = ["*"]
+  }
+
   tags {
     Name = "tierra-${var.project}-${var.region}-${var.environment}-cloudfront"
     Project = "${var.project}"
