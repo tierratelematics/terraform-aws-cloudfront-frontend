@@ -28,6 +28,7 @@ resource "aws_s3_bucket" "bucket_app" {
     Name = "tierra-${var.project}-${var.brand}-${var.region}-${var.environment}-cloudfront"
     Project = "${var.project}"
     Environment = "${var.environment}"
+    Brand = "${var.brand}"
   }
 }
 
@@ -44,7 +45,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 
   enabled = true
-  comment = "Cloud Front for ${var.project} (${var.environment})"
+  comment = "Cloud Front for ${var.project} [Brand: ${var.brand}] (${var.environment})"
 
   aliases = ["${var.alias_domain}","${var.public_register_alias_domain}"]
 
@@ -105,5 +106,6 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   tags {
     Project = "${var.project}"
     Environment = "${var.environment}"
+    Brand = "${var.brand}"
   }
 }
