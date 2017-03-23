@@ -1,7 +1,7 @@
 data "aws_iam_policy_document" "s3_policy" {
   statement {
     actions   = ["s3:GetObject"]
-    resources = ["arn:aws:s3:::tierra-${var.project}-${var.region}-${var.environment}-cloudfront/*"]
+    resources = ["arn:aws:s3:::tierra-${var.project}-${var.brand}-${var.region}-${var.environment}-cloudfront/*"]
 
     principals {
       type        = "AWS"
@@ -11,7 +11,7 @@ data "aws_iam_policy_document" "s3_policy" {
 }
 
 resource "aws_s3_bucket" "bucket_app" {
-  bucket = "tierra-${var.project}-${var.region}-${var.environment}-cloudfront"
+  bucket = "tierra-${var.project}-${var.brand}-${var.region}-${var.environment}-cloudfront"
   policy = "${data.aws_iam_policy_document.s3_policy.json}"
 
   website {
@@ -25,7 +25,7 @@ resource "aws_s3_bucket" "bucket_app" {
   }
 
   tags {
-    Name = "tierra-${var.project}-${var.region}-${var.environment}-cloudfront"
+    Name = "tierra-${var.project}-${var.brand}-${var.region}-${var.environment}-cloudfront"
     Project = "${var.project}"
     Environment = "${var.environment}"
   }
@@ -33,7 +33,7 @@ resource "aws_s3_bucket" "bucket_app" {
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
-    domain_name = "tierra-${var.project}-${var.region}-${var.environment}-cloudfront.s3-website-eu-west-1.amazonaws.com"
+    domain_name = "tierra-${var.project}-${var.brand}-${var.region}-${var.environment}-cloudfront.s3-website-eu-west-1.amazonaws.com"
     origin_id = "${var.project}-${var.region}-${var.environment}-origin"
     custom_origin_config {
       http_port = 80

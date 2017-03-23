@@ -39,3 +39,7 @@ variable "ssl_cert_id" {
 variable "public_register_alias_domain" {
   description = "Register.it alias domain"
 }
+
+variable "brand" {
+  description = "Frontend brand"
+}
