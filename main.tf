@@ -35,7 +35,7 @@ resource "aws_s3_bucket" "bucket_app" {
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
     domain_name = "tierra-${var.project}-${var.brand}-${var.region}-${var.environment}-cloudfront.s3-website-eu-west-1.amazonaws.com"
-    origin_id = "${var.project}-${var.region}-${var.environment}-origin"
+    origin_id = "${var.project}-${var.brand}-${var.region}-${var.environment}-origin"
     custom_origin_config {
       http_port = 80
       https_port = 443
@@ -52,7 +52,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "${var.project}-${var.region}-${var.environment}-origin"
+    target_origin_id = "${var.project}-${var.brand}-${var.region}-${var.environment}-origin"
 
     forwarded_values {
       query_string = false
