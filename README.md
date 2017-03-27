@@ -10,6 +10,7 @@ Requirements
 Module Input Variables
 ----------------------
 - `project` - project name
+- `brand` - brand name
 - `environment` - environment name (i.e. dev,test,prod)
 - `region` - aws region
 - `default_root_path` - project default root path (default "")
@@ -28,6 +29,7 @@ module "cloudfront-s3" {
   alias_domain = "prettygoat-fe.tierra.io"
   ssl_cert_id = "idSSLCert"
   public_register_alias_domain = "prettygoat-fe.tierratelematics.com"
+  brand = "main"
 }
 ```
 

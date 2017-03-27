@@ -1,7 +1,7 @@
 data "aws_iam_policy_document" "s3_policy" {
   statement {
     actions   = ["s3:GetObject"]
-    resources = ["arn:aws:s3:::tierra-${var.project}-${var.region}-${var.environment}-cloudfront/*"]
+    resources = ["arn:aws:s3:::tierra-${var.project}-${var.brand}-${var.region}-${var.environment}-cloudfront/*"]
 
     principals {
       type        = "AWS"
@@ -11,44 +11,52 @@ data "aws_iam_policy_document" "s3_policy" {
 }
 
 resource "aws_s3_bucket" "bucket_app" {
-  bucket = "tierra-${var.project}-${var.region}-${var.environment}-cloudfront"
+  bucket = "tierra-${var.project}-${var.brand}-${var.region}-${var.environment}-cloudfront"
   policy = "${data.aws_iam_policy_document.s3_policy.json}"
 
   website {
     index_document = "index.html"
   }
 
+  cors_rule {
+    allowed_headers = ["*"]
+    allowed_methods = ["GET"]
+    allowed_origins = ["*"]
+  }
+
   tags {
-    Name = "tierra-${var.project}-${var.region}-${var.environment}-cloudfront"
+    Name = "tierra-${var.project}-${var.brand}-${var.region}-${var.environment}-cloudfront"
     Project = "${var.project}"
     Environment = "${var.environment}"
+    Brand = "${var.brand}"
   }
 }
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
-    domain_name = "tierra-${var.project}-${var.region}-${var.environment}-cloudfront.s3-website-eu-west-1.amazonaws.com"
-    origin_id = "${var.project}-${var.region}-${var.environment}-origin"
+    domain_name = "tierra-${var.project}-${var.brand}-${var.region}-${var.environment}-cloudfront.s3-website-eu-west-1.amazonaws.com"
+    origin_id = "${var.project}-${var.brand}-${var.region}-${var.environment}-origin"
     custom_origin_config {
       http_port = 80
       https_port = 443
-      origin_protocol_policy = "https-only"
+      origin_protocol_policy = "http-only"
       origin_ssl_protocols = ["TLSv1.2"]
     }
   }
 
   enabled = true
-  comment = "Cloud Front for ${var.project} (${var.environment})"
+  comment = "Cloud Front for ${var.project} [Brand: ${var.brand}] (${var.environment})"
 
   aliases = ["${var.alias_domain}","${var.public_register_alias_domain}"]
 
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "${var.project}-${var.region}-${var.environment}-origin"
+    target_origin_id = "${var.project}-${var.brand}-${var.region}-${var.environment}-origin"
 
     forwarded_values {
       query_string = false
+      headers = ["Origin"]
 
       cookies {
         forward = "none"
@@ -99,5 +107,6 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   tags {
     Project = "${var.project}"
     Environment = "${var.environment}"
+    Brand = "${var.brand}"
   }
 }
