@@ -43,3 +43,18 @@ variable "public_register_alias_domain" {
 variable "brand" {
   description = "Frontend brand"
 }
+
+variable "default_ttl" {
+  description = "The default ttl"
+  default = 3600
+}
+
+variable "max_ttl" {
+  description = "The max ttl"
+  default = 86400
+}
+
+variable "min_ttl" {
+  description = "The min ttl"
+  default = 0
+}
