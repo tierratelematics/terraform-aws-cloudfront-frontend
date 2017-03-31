@@ -17,6 +17,9 @@ Module Input Variables
 - `alias_domain` - Alias Domain Name
 - `ssl_cert_id` - The ssl Certificate id
 - `public_register_alias_domain` - Register.it alias domain
+- `default_ttl` - default ttl (default "3600")
+- `max_ttl` - max ttl (default "86400")
+- `min_ttl` - min ttl (default "0")
 
 Usage
 -----

@@ -64,9 +64,9 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     }
 
     viewer_protocol_policy = "${var.viewer_protocol_policy}"
-    min_ttl = 0
-    default_ttl = 3600
-    max_ttl = 86400
+    min_ttl = "${var.min_ttl}"
+    default_ttl = "${var.default_ttl}"
+    max_ttl = "${var.max_ttl}"
   }
 
   default_root_object = "${var.default_root_path}index.html"
