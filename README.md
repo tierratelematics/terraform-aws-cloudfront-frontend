@@ -20,6 +20,7 @@ Module Input Variables
 - `default_ttl` - default ttl (default "3600")
 - `max_ttl` - max ttl (default "86400")
 - `min_ttl` - min ttl (default "0")
+- `cache_compress` - Compress resources (default true)
 
 Usage
 -----

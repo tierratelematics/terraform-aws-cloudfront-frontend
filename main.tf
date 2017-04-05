@@ -53,6 +53,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = "${var.project}-${var.brand}-${var.region}-${var.environment}-origin"
+    compress = "${var.cache_compress}"
 
     forwarded_values {
       query_string = false
