@@ -58,3 +58,8 @@ variable "min_ttl" {
   description = "The min ttl"
   default = 0
 }
+
+variable "cache_compress" {
+  description = "Compress resources"
+  default = true
+}
