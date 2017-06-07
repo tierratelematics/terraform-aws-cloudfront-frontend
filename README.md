@@ -10,13 +10,13 @@ Requirements
 Module Input Variables
 ----------------------
 - `project` - project name
-- `brand` - brand name
+- `brands` - list of brand
 - `environment` - environment name (i.e. dev,test,prod)
 - `region` - aws region
 - `default_root_path` - project default root path (default "")
-- `alias_domain` - Alias Domain Name
+- `alias_domain_suffix` - Alias Suffix Domain Name
 - `ssl_cert_id` - The ssl Certificate id
-- `public_register_alias_domain` - Register.it alias domain
+- `list_public_register_alias_domain` - List of Register.it alias domain
 - `default_ttl` - default ttl (default "3600")
 - `max_ttl` - max ttl (default "86400")
 - `min_ttl` - min ttl (default "0")
@@ -30,18 +30,20 @@ module "cloudfront-s3" {
   project = "ninjagoat-frontend"
   environment = "dev"
   region = "eu-west-1"
-  alias_domain = "prettygoat-fe.tierra.io"
+  alias_domain_suffix = ["prettygoat-fe.tierra.io"]
   ssl_cert_id = "idSSLCert"
-  public_register_alias_domain = "prettygoat-fe.tierratelematics.com"
-  brand = "main"
+  list_public_register_alias_domain = ["prettygoat-fe.tierratelematics.com"]
+  brands = ["main"]
 }
 ```
 
 Outputs
 =======
-- `bucket_name` - aws bucket name
-- `cloudfront_url` - aws cloudfront url
-- `cloufront_hosted_zone_id` - aws cloufroont hosted zone id
+- `list_bucket_name` - aws bucket names
+- `list_cloudfront_url` - aws cloudfront urls
+- `cloufront_hosted_zone_id` - aws cloudfront hosted zone id
+- `list_dns_internal_domain` - DNS internal domains
+- `list_dns_public_domain` - DNS public domains
 
 License
 =======
