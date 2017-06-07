@@ -1,5 +1,6 @@
 data "aws_iam_policy_document" "s3_policy" {
   count = "${length(var.brands)}"
+
   statement {
     actions   = ["s3:GetObject"]
     resources = ["arn:aws:s3:::tierra-${var.project}-${element(var.brands, count.index)}-${var.region}-${var.environment}-cloudfront/*"]
@@ -12,7 +13,7 @@ data "aws_iam_policy_document" "s3_policy" {
 }
 
 resource "aws_s3_bucket" "bucket_app" {
-  count = "${length(var.brands)}"
+  count  = "${length(var.brands)}"
   bucket = "tierra-${var.project}-${element(var.brands,count.index)}-${var.region}-${var.environment}-cloudfront"
   policy = "${element(data.aws_iam_policy_document.s3_policy.*.json,count.index)}"
 
@@ -27,10 +28,10 @@ resource "aws_s3_bucket" "bucket_app" {
   }
 
   tags {
-    Name = "tierra-${var.project}-${element(var.brands,count.index)}-${var.region}-${var.environment}-cloudfront"
-    Project = "${var.project}"
+    Name        = "tierra-${var.project}-${element(var.brands,count.index)}-${var.region}-${var.environment}-cloudfront"
+    Project     = "${var.project}"
     Environment = "${var.environment}"
-    Brand = "${element(var.brands,count.index)}"
+    Brand       = "${element(var.brands,count.index)}"
   }
 }
 
@@ -39,29 +40,30 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
   origin {
     domain_name = "tierra-${var.project}-${element(var.brands,count.index)}-${var.region}-${var.environment}-cloudfront.s3-website-eu-west-1.amazonaws.com"
-    origin_id = "${var.project}-${element(var.brands,count.index)}-${var.region}-${var.environment}-origin"
+    origin_id   = "${var.project}-${element(var.brands,count.index)}-${var.region}-${var.environment}-origin"
+
     custom_origin_config {
-      http_port = 80
-      https_port = 443
+      http_port              = 80
+      https_port             = 443
       origin_protocol_policy = "http-only"
-      origin_ssl_protocols = ["TLSv1.2"]
+      origin_ssl_protocols   = ["TLSv1.2"]
     }
   }
 
   enabled = true
   comment = "Cloud Front for ${var.project} [Brand: ${element(var.brands,count.index)}] (${var.environment})"
 
-  aliases = ["${var.project}-${element(var.brands,count.index)}-${var.environment}.${var.alias_domain_suffix}","${element(var.list_public_register_alias_domain, count.index)}"]
+  aliases = ["${var.project}-${element(var.brands,count.index)}-${var.environment}.${var.alias_domain_suffix}", "${element(var.list_public_register_alias_domain, count.index)}"]
 
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = "${var.project}-${element(var.brands,count.index)}-${var.region}-${var.environment}-origin"
-    compress = "${var.cache_compress}"
+    compress         = "${var.cache_compress}"
 
     forwarded_values {
       query_string = false
-      headers = ["Origin"]
+      headers      = ["Origin"]
 
       cookies {
         forward = "none"
@@ -69,13 +71,13 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     }
 
     viewer_protocol_policy = "${var.viewer_protocol_policy}"
-    min_ttl = "${var.min_ttl}"
-    default_ttl = "${var.default_ttl}"
-    max_ttl = "${var.max_ttl}"
+    min_ttl                = "${var.min_ttl}"
+    default_ttl            = "${var.default_ttl}"
+    max_ttl                = "${var.max_ttl}"
   }
 
   default_root_object = "${var.default_root_path}index.html"
-  price_class = "PriceClass_200"
+  price_class         = "PriceClass_200"
 
   restrictions {
     geo_restriction {
@@ -84,35 +86,36 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 
   "viewer_certificate" {
-    iam_certificate_id = "${var.ssl_cert_id}"
-    ssl_support_method = "sni-only"
+    iam_certificate_id       = "${var.ssl_cert_id}"
+    ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1"
   }
 
   custom_error_response = [
     {
-      error_caching_min_ttl = "0",
-      error_code = "400",
-      response_code = "200",
-      response_page_path = "/index.html"
+      error_caching_min_ttl = "0"
+      error_code            = "400"
+      response_code         = "200"
+      response_page_path    = "/index.html"
     },
     {
-      error_caching_min_ttl = "0",
-      error_code = "404",
-      response_code = "200",
-      response_page_path = "/index.html"
+      error_caching_min_ttl = "0"
+      error_code            = "404"
+      response_code         = "200"
+      response_page_path    = "/index.html"
     },
     {
-      error_caching_min_ttl = "0",
-      error_code = "403",
-      response_code = "200",
-      response_page_path = "/index.html"
-    }]
+      error_caching_min_ttl = "0"
+      error_code            = "403"
+      response_code         = "200"
+      response_page_path    = "/index.html"
+    },
+  ]
 
   tags {
-    Project = "${var.project}"
+    Project     = "${var.project}"
     Environment = "${var.environment}"
-    Brand = "${element(var.brands,count.index)}"
+    Brand       = "${element(var.brands,count.index)}"
   }
 }
 

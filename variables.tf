@@ -16,17 +16,18 @@ variable "route53_zone_id" {
 
 variable "default_root_path" {
   description = "The default root path"
-  default = ""
+  default     = ""
 }
 
 variable "viewer_protocol_policy" {
   description = "The protol policy"
-  default = "redirect-to-https"
+  default     = "redirect-to-https"
 }
 
 variable "viewer_certificate" {
-  type = "map"
+  type        = "map"
   description = "All certificate parameters"
+
   default = {
     cloudfront_default_certificate = true
   }
@@ -42,30 +43,30 @@ variable "ssl_cert_id" {
 
 variable "list_public_register_alias_domain" {
   description = "Register.it alias domain"
-  type = "list"
+  type        = "list"
 }
 
 variable "brands" {
   description = "Frontend brand"
-  type = "list"
+  type        = "list"
 }
 
 variable "default_ttl" {
   description = "The default ttl"
-  default = 3600
+  default     = 3600
 }
 
 variable "max_ttl" {
   description = "The max ttl"
-  default = 86400
+  default     = 86400
 }
 
 variable "min_ttl" {
   description = "The min ttl"
-  default = 0
+  default     = 0
 }
 
 variable "cache_compress" {
   description = "Compress resources"
-  default = true
+  default     = true
 }
