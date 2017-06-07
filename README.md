@@ -30,7 +30,7 @@ module "cloudfront-s3" {
   project = "ninjagoat-frontend"
   environment = "dev"
   region = "eu-west-1"
-  alias_domain_suffix = ["prettygoat-fe.tierra.io"]
+  alias_domain_suffix = "tierra.io"
   ssl_cert_id = "idSSLCert"
   list_public_register_alias_domain = ["prettygoat-fe.tierratelematics.com"]
   brands = ["main"]
