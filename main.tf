@@ -53,7 +53,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   enabled = true
   comment = "Cloud Front for ${var.project} [Brand: ${element(var.brands,count.index)}] (${var.environment})"
 
-  aliases = ["${var.project}-${element(var.brands,count.index)}-${var.environment}.${var.alias_domain_suffix}", "${element(var.list_public_register_alias_domain, count.index)}"]
+  aliases = ["${var.project}-${var.environment}-${element(var.brands,count.index)}.${var.alias_domain_suffix}", "${element(var.list_public_register_alias_domain, count.index)}"]
 
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
@@ -123,7 +123,7 @@ resource "aws_route53_record" "cdn-cname" {
   count = "${length(var.brands)}"
 
   zone_id = "${var.route53_zone_id}"
-  name    = "${var.project}-${element(var.brands,count.index)}-${var.environment}.${var.alias_domain_suffix}"
+  name    = "${var.project}-${var.environment}-${element(var.brands,count.index)}.${var.alias_domain_suffix}"
   type    = "CNAME"
   ttl     = "300"
   records = ["${element(aws_cloudfront_distribution.s3_distribution.*.domain_name, count.index)}"]
