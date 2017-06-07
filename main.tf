@@ -1,7 +1,8 @@
 data "aws_iam_policy_document" "s3_policy" {
+  count = "${length(var.brands)}"
   statement {
     actions   = ["s3:GetObject"]
-    resources = ["arn:aws:s3:::tierra-${var.project}-${var.brand}-${var.region}-${var.environment}-cloudfront/*"]
+    resources = ["arn:aws:s3:::tierra-${var.project}-${element(var.brands, count.index)}-${var.region}-${var.environment}-cloudfront/*"]
 
     principals {
       type        = "AWS"
@@ -11,8 +12,9 @@ data "aws_iam_policy_document" "s3_policy" {
 }
 
 resource "aws_s3_bucket" "bucket_app" {
-  bucket = "tierra-${var.project}-${var.brand}-${var.region}-${var.environment}-cloudfront"
-  policy = "${data.aws_iam_policy_document.s3_policy.json}"
+  count = "${length(var.brands)}"
+  bucket = "tierra-${var.project}-${element(var.brands,count.index)}-${var.region}-${var.environment}-cloudfront"
+  policy = "${element(data.aws_iam_policy_document.s3_policy.*.json,count.index)}"
 
   website {
     index_document = "index.html"
@@ -25,17 +27,19 @@ resource "aws_s3_bucket" "bucket_app" {
   }
 
   tags {
-    Name = "tierra-${var.project}-${var.brand}-${var.region}-${var.environment}-cloudfront"
+    Name = "tierra-${var.project}-${element(var.brands,count.index)}-${var.region}-${var.environment}-cloudfront"
     Project = "${var.project}"
     Environment = "${var.environment}"
-    Brand = "${var.brand}"
+    Brand = "${element(var.brands,count.index)}"
   }
 }
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
+  count = "${length(var.brands)}"
+
   origin {
-    domain_name = "tierra-${var.project}-${var.brand}-${var.region}-${var.environment}-cloudfront.s3-website-eu-west-1.amazonaws.com"
-    origin_id = "${var.project}-${var.brand}-${var.region}-${var.environment}-origin"
+    domain_name = "tierra-${var.project}-${element(var.brands,count.index)}-${var.region}-${var.environment}-cloudfront.s3-website-eu-west-1.amazonaws.com"
+    origin_id = "${var.project}-${element(var.brands,count.index)}-${var.region}-${var.environment}-origin"
     custom_origin_config {
       http_port = 80
       https_port = 443
@@ -45,14 +49,14 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 
   enabled = true
-  comment = "Cloud Front for ${var.project} [Brand: ${var.brand}] (${var.environment})"
+  comment = "Cloud Front for ${var.project} [Brand: ${element(var.brands,count.index)}] (${var.environment})"
 
-  aliases = ["${var.alias_domain}","${var.public_register_alias_domain}"]
+  aliases = ["${var.project}-${element(var.brands,count.index)}-${var.environment}.${var.alias_domain_suffix}","${element(var.list_public_register_alias_domain, count.index)}"]
 
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "${var.project}-${var.brand}-${var.region}-${var.environment}-origin"
+    target_origin_id = "${var.project}-${element(var.brands,count.index)}-${var.region}-${var.environment}-origin"
     compress = "${var.cache_compress}"
 
     forwarded_values {
@@ -108,6 +112,16 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   tags {
     Project = "${var.project}"
     Environment = "${var.environment}"
-    Brand = "${var.brand}"
+    Brand = "${element(var.brands,count.index)}"
   }
+}
+
+resource "aws_route53_record" "cdn-cname" {
+  count = "${length(var.brands)}"
+
+  zone_id = "${var.route53_zone_id}"
+  name    = "${var.project}-${element(var.brands,count.index)}-${var.environment}.${var.alias_domain_suffix}"
+  type    = "CNAME"
+  ttl     = "300"
+  records = ["${element(aws_cloudfront_distribution.s3_distribution.*.domain_name, count.index)}"]
 }
