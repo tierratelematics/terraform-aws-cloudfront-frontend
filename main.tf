@@ -14,7 +14,7 @@ data "aws_iam_policy_document" "s3_policy" {
 
 resource "aws_s3_bucket" "bucket_app" {
   count  = "${length(var.brands)}"
-  bucket = "tierra-${var.project}-${element(var.brands,count.index)}-${var.region}-${var.environment}-cloudfront"
+  bucket = "tierra-${join("",slice(split("",join("-",list(var.project,element(var.brands,count.index),var.region,var.environment))),0,45))}-cloudfront"
   policy = "${element(data.aws_iam_policy_document.s3_policy.*.json,count.index)}"
 
   website {
