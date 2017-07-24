@@ -39,7 +39,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   count = "${length(var.brands)}"
 
   origin {
-    domain_name = "tierra-${var.project}-${element(var.brands,count.index)}-${var.region}-${var.environment}-cloudfront.s3-website-eu-west-1.amazonaws.com"
+    domain_name = "tierra-${join("",slice(split("",join("-",list(var.project,element(var.brands,count.index),var.region,var.environment))),0,45))}-cloudfront.s3-website-eu-west-1.amazonaws.com"
     origin_id   = "${join("",slice(split("",join("-",list(var.project,element(var.brands,count.index),var.region,var.environment))),0,45))}-origin"
 
     custom_origin_config {
