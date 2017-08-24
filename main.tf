@@ -3,7 +3,6 @@ data "template_file" "bucket_name" {
   template = "$${name}"
 
   vars {
-    pippo = "ciao"
     name = "${substr(format("%s-%s-%s-%s", var.project, var.brands[count.index], var.region, var.environment), 0, ((length(format("%s-%s-%s-%s", var.project, var.brands[count.index], var.region, var.environment)) > 45) ? 45 : -1))}"
   }
 }
