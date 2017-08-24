@@ -12,9 +12,18 @@ data "aws_iam_policy_document" "s3_policy" {
   }
 }
 
+data "template_file" "bucket_name" {
+  count    = "${length(var.brands)}"
+  template = "$${name}"
+
+  vars {
+    name = "${substr(${var.project}-${var.brands[count.index]}-${var.region}-${var.environment}, 0, (${var.project}-${var.brands[count.index]}-${var.region}-${var.environment} > 45) ? 45 : -1)}"
+  }
+}
+
 resource "aws_s3_bucket" "bucket_app" {
   count  = "${length(var.brands)}"
-  bucket = "tierra-${substr(join("-",list(var.project,element(var.brands,count.index),var.region,var.environment)), 0, 45)}-cloudfront"
+  bucket = "tierra-${data.template_file.bucket_name.*.rendered[count.index]}-cloudfront"
   policy = "${element(data.aws_iam_policy_document.s3_policy.*.json,count.index)}"
 
   website {
@@ -39,8 +48,8 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   count = "${length(var.brands)}"
 
   origin {
-    domain_name = "tierra-${substr(join("-",list(var.project,element(var.brands,count.index),var.region,var.environment)), 0, 45)}-cloudfront.s3-website-eu-west-1.amazonaws.com"
-    origin_id   = "${substr(join("-",list(var.project,element(var.brands,count.index),var.region,var.environment)), 0, 45)}-origin"
+    domain_name = "tierra-${data.template_file.bucket_name.*.rendered[count.index]}-cloudfront.s3-website-eu-west-1.amazonaws.com"
+    origin_id   = "${data.template_file.bucket_name.*.rendered[count.index]}-origin"
 
     custom_origin_config {
       http_port              = 80
