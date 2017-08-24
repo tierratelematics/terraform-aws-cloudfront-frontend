@@ -24,7 +24,7 @@ resource "aws_s3_bucket" "bucket_app" {
   cors_rule {
     allowed_headers = ["*"]
     allowed_methods = ["GET"]
-    allowed_origins = ["*"]
+    allowed_origins = ["http://*", "https://*"]
   }
 
   tags {
