@@ -3,7 +3,7 @@ data "aws_iam_policy_document" "s3_policy" {
 
   statement {
     actions   = ["s3:GetObject"]
-    resources = ["arn:aws:s3:::tierra-${join("",slice(split("",join("-",list(var.project,element(var.brands,count.index),var.region,var.environment))),0,45))}-cloudfront/*"]
+    resources = ["arn:aws:s3:::tierra-${var.project}-${element(var.brands, count.index)}-${var.region}-${var.environment}-cloudfront/*"]
 
     principals {
       type        = "AWS"
@@ -14,7 +14,7 @@ data "aws_iam_policy_document" "s3_policy" {
 
 resource "aws_s3_bucket" "bucket_app" {
   count  = "${length(var.brands)}"
-  bucket = "tierra-${join("",slice(split("",join("-",list(var.project,element(var.brands,count.index),var.region,var.environment))),0,45))}-cloudfront"
+  bucket = "tierra-${var.project}-${element(var.brands,count.index)}-${var.region}-${var.environment}-cloudfront"
   policy = "${element(data.aws_iam_policy_document.s3_policy.*.json,count.index)}"
 
   website {
@@ -28,7 +28,7 @@ resource "aws_s3_bucket" "bucket_app" {
   }
 
   tags {
-    Name        = "tierra-${join("",slice(split("",join("-",list(var.project,element(var.brands,count.index),var.region,var.environment))),0,45))}-cloudfront"
+    Name        = "tierra-${var.project}-${element(var.brands,count.index)}-${var.region}-${var.environment}-cloudfront"
     Project     = "${var.project}"
     Environment = "${var.environment}"
     Brand       = "${element(var.brands,count.index)}"
@@ -39,8 +39,8 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   count = "${length(var.brands)}"
 
   origin {
-    domain_name = "tierra-${join("",slice(split("",join("-",list(var.project,element(var.brands,count.index),var.region,var.environment))),0,45))}-cloudfront.s3-website-eu-west-1.amazonaws.com"
-    origin_id   = "${join("",slice(split("",join("-",list(var.project,element(var.brands,count.index),var.region,var.environment))),0,45))}-origin"
+    domain_name = "tierra-${var.project}-${element(var.brands,count.index)}-${var.region}-${var.environment}-cloudfront.s3-website-eu-west-1.amazonaws.com"
+    origin_id   = "${var.project}-${element(var.brands,count.index)}-${var.region}-${var.environment}-origin"
 
     custom_origin_config {
       http_port              = 80
@@ -58,7 +58,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "${join("",slice(split("",join("-",list(var.project,element(var.brands,count.index),var.region,var.environment))),0,45))}-origin"
+    target_origin_id = "${var.project}-${element(var.brands,count.index)}-${var.region}-${var.environment}-origin"
     compress         = "${var.cache_compress}"
 
     forwarded_values {
