@@ -36,6 +36,8 @@ resource "aws_s3_bucket" "bucket_app" {
     allowed_origins = ["http://*", "https://*"]
   }
 
+  force_destroy = true
+
   tags {
     Name        = "tierra-${var.project}-${element(var.brands,count.index)}-${var.region}-${var.environment}-cloudfront"
     Project     = "${var.project}"
