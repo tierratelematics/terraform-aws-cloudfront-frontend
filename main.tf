@@ -1,3 +1,7 @@
+provider "template" {
+  version = "~> 0.1"
+}
+
 data "template_file" "bucket_name" {
   count    = "${length(var.brands)}"
   template = "$${name}"
@@ -35,6 +39,8 @@ resource "aws_s3_bucket" "bucket_app" {
     allowed_methods = ["GET"]
     allowed_origins = ["http://*", "https://*"]
   }
+
+  force_destroy = true
 
   tags {
     Name        = "tierra-${var.project}-${element(var.brands,count.index)}-${var.region}-${var.environment}-cloudfront"
