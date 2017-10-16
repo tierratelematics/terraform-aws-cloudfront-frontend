@@ -1,3 +1,7 @@
+provider "template" {
+  version = "~> 0.1"
+}
+
 data "template_file" "bucket_name" {
   count    = "${length(var.brands)}"
   template = "$${name}"
