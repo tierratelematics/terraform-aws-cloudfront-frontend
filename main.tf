@@ -1,5 +1,5 @@
 provider "template" {
-  version = "~> 0.1"
+  version = "~> 1.0"
 }
 
 data "template_file" "bucket_name" {
