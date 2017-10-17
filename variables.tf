@@ -37,8 +37,8 @@ variable "alias_domain_suffix" {
   description = "Alias domain suffix"
 }
 
-variable "ssl_cert_id" {
-  description = "The ssl cert id"
+variable "ssl_cert_arn" {
+  description = "The ssl cert arn"
 }
 
 variable "list_public_register_alias_domain" {
