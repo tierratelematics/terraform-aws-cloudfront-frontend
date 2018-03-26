@@ -39,10 +39,12 @@ variable "alias_domain_suffix" {
 
 variable "ssl_cert_id" {
   description = "The IAM SSL certificate id"
+  default     = ""
 }
 
 variable "ssl_cert_arn" {
   description = "The ACM SSL certificate ARN"
+  default     = ""
 }
 
 variable "list_public_register_alias_domain" {
