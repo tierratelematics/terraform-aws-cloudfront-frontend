@@ -1,5 +1,5 @@
 provider "template" {
-  version = "~> 0.1"
+  version = "~> 1.0"
 }
 
 data "template_file" "bucket_name" {
@@ -54,7 +54,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   count = "${length(var.brands)}"
 
   origin {
-    domain_name = "tierra-${element(data.template_file.bucket_name.*.rendered,count.index)}-cloudfront.s3-website-eu-west-1.amazonaws.com"
+    domain_name = "tierra-${element(data.template_file.bucket_name.*.rendered,count.index)}-cloudfront.s3-website-${var.region}.amazonaws.com"
     origin_id   = "${element(data.template_file.bucket_name.*.rendered,count.index)}-origin"
 
     custom_origin_config {
@@ -102,6 +102,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
   "viewer_certificate" {
     iam_certificate_id       = "${var.ssl_cert_id}"
+    acm_certificate_arn      = "${var.ssl_cert_arn}"
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1"
   }
