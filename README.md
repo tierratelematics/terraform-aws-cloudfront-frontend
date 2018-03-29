@@ -15,7 +15,8 @@ Module Input Variables
 - `region` - aws region
 - `default_root_path` - project default root path (default "")
 - `alias_domain_suffix` - Alias Suffix Domain Name
-- `ssl_cert_id` - The ssl Certificate id
+- `ssl_cert_id` - The ssl Certificate id (if you want to use the certificate's arn, you do not have to set this variable)
+- `ssl_cert_arn` - The ssl Certificate arn (if you want to use the certificate's id, you do not have to set this variable)
 - `list_public_register_alias_domain` - List of Register.it alias domain
 - `default_ttl` - default ttl (default "3600")
 - `max_ttl` - max ttl (default "86400")
