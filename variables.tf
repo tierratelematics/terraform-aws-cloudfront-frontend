@@ -48,12 +48,12 @@ variable "ssl_cert_arn" {
 }
 
 variable "list_public_register_alias_domain" {
-  description = "Register.it alias domain"
+  description = "A list of comma-separated list of aliases (no space allowed between domain name and commas)."
   type        = "list"
 }
 
 variable "brands" {
-  description = "Frontend brand"
+  description = "A list of Frontend brands"
   type        = "list"
 }
 

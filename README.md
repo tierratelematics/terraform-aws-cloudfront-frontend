@@ -17,7 +17,7 @@ Module Input Variables
 - `alias_domain_suffix` - Alias Suffix Domain Name
 - `ssl_cert_id` - The ssl Certificate id (if you want to use the certificate's arn, you do not have to set this variable)
 - `ssl_cert_arn` - The ssl Certificate arn (if you want to use the certificate's id, you do not have to set this variable)
-- `list_public_register_alias_domain` - List of Register.it alias domain
+- `list_public_register_alias_domain` - A list of comma-separated list of aliases
 - `default_ttl` - default ttl (default "3600")
 - `max_ttl` - max ttl (default "86400")
 - `min_ttl` - min ttl (default "0")
@@ -34,6 +34,21 @@ module "cloudfront-s3" {
   alias_domain_suffix = "tierra.io"
   ssl_cert_id = "idSSLCert"
   list_public_register_alias_domain = ["prettygoat-fe.tierratelematics.com"]
+  brands = ["main"]
+}
+```
+
+You can now use more than one alias using a comma separated list of domain names:
+
+```hcl
+module "cloudfront-s3" {
+  source = "github.com/tierratelematics/terraform-aws-cloudfront-frontend"
+  project = "ninjagoat-frontend"
+  environment = "dev"
+  region = "eu-west-1"
+  alias_domain_suffix = "tierra.io"
+  ssl_cert_id = "idSSLCert"
+  list_public_register_alias_domain = ["prettygoat-fe.tierratelematics.com,example.com"]
   brands = ["main"]
 }
 ```
