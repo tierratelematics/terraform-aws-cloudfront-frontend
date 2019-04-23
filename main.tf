@@ -68,7 +68,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   enabled = true
   comment = "Cloud Front for ${var.project} [Brand: ${element(var.brands,count.index)}] (${var.environment})"
 
-  aliases = ["${element(var.list_public_register_alias_domain, count.index)}"]
+  aliases = ["${var.project}-${var.environment}-${element(var.brands,count.index)}.${var.alias_domain_suffix}", "${split(",", element(var.list_public_register_alias_domain, count.index))}"]
 
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
