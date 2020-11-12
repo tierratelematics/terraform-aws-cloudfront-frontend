@@ -25,7 +25,7 @@ variable "viewer_protocol_policy" {
 }
 
 variable "viewer_certificate" {
-  type        = "map"
+  type        = map(string)
   description = "All certificate parameters"
 
   default = {
@@ -49,12 +49,12 @@ variable "ssl_cert_arn" {
 
 variable "list_public_register_alias_domain" {
   description = "A list of comma-separated list of aliases (no space allowed between domain name and commas)."
-  type        = "list"
+  type        = list(string)
 }
 
 variable "brands" {
   description = "A list of Frontend brands"
-  type        = "list"
+  type        = list(string)
 }
 
 variable "default_ttl" {
@@ -76,3 +76,4 @@ variable "cache_compress" {
   description = "Compress resources"
   default     = true
 }
+
